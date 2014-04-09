@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript">
+function AccelerationMonitor() {
+	this.monitoring = false;
+	this.defaultFilter = function(e) { return true; }
+	this.callback = function() {}
+	this.currentCallback = function() {}
+	this.filter = this.defaultFilter;
+}
+
+AccelerationMonitor.prototype.start = function(callback) {
+	if (!this.monitoring) {
+		this.callback = callback;
+		this.currentCallback = this.callbackHandler.bind(this);
+		window.addEventListener("devicemotion", this.currentCallback, true);
+		this.monitoring = true;
+	}
+}
+
+AccelerationMonitor.prototype.stop = function() {
+	if (this.monitoring) {
+		window.removeEventListener("devicemotion", this.currentCallback, true);
+		this.monitoring = false;
+	}
+}
+
+AccelerationMonitor.prototype.callbackHandler = function(e) {
+	if (this.filter(e)) {
+		this.callback(e);
+	}
+}
+
+var am;
+
+window.onload = function () {
+	am = new AccelerationMonitor();
+}
+
+function toggleMonitoring(elem) {
+	if (!am.monitoring) {
+		am.filter = am.defaultFilter;
+		am.start(doSomething);
+		elem.innerHTML = "Stop";
+	}
+	else {
+		am.stop();
+		elem.innerHTML = "Start";
+	}
+}
+
+function toggleMonitoringF(elem) {
+	if (!am.monitoring) {
+		am.filter = zFilter;
+		am.start(doSomething);
+		elem.innerHTML = "Stop";
+	}
+	else {
+		am.stop();
+		elem.innerHTML = "Start with Filter";
+	}
+}
+
+function clearData() {
+	document.getElementById("stuff").innerHTML = "";
+}
+
+function doSomething(e) {
+	var x = e.accelerationIncludingGravity.x;
+    var y = e.accelerationIncludingGravity.y;
+    var z = e.accelerationIncludingGravity.z;
+
+   	logAccel(x,y,z);
+}
+
+function zFilter(e) {
+	var x = e.accelerationIncludingGravity.x;
+    var y = e.accelerationIncludingGravity.y;
+    var z = e.accelerationIncludingGravity.z;
+
+    return Math.abs(z) <= 6;
+}
+
+function logAccel(x,y,z) {
+	var p = document.createElement("p");
+    var t = document.createTextNode("x: "+x+", y: "+y+", z: "+z);
+    p.appendChild(t);
+
+    document.getElementById("stuff").appendChild(p);
+}
+</script>
+</head>
+<body>
+	<div id="toggleButton">
+		<button id="tb" onclick="toggleMonitoring(this)">Start</button>
+		<button id="cb" onclick="clearData()">Clear</button>
+		<button id="fb" onclick="toggleMonitoringF(this)">Start With Filter</button>
+	</div>
+	<div id="stuff">
+	</div>
+</body>
+</html>
