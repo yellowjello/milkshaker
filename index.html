@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript" src="js/acceleration_monitor.js"></script>
+<script type="text/javascript" src="js/game_manager.js"></script>
+<script type="text/javascript">
+var sm;
+var gm;
+
+window.onload = function () {
+	gm = new GameManager();
+	sm = new ShakeMonitor(onInit);
+}
+
+function onInit() {
+	document.getElementById("browsersux").style.display = "none";
+	document.getElementById("main").style.display = "block";
+
+	sm.start(onShake);
+	console.log("inited");
+}
+
+function onShake(e1,e2) {
+	var x1 = e1.accelerationIncludingGravity.x;
+    var y1 = e1.accelerationIncludingGravity.y;
+    var z1 = e1.accelerationIncludingGravity.z;
+
+	var x2 = e2.accelerationIncludingGravity.x;
+    var y2 = e2.accelerationIncludingGravity.y;
+    var z2 = e2.accelerationIncludingGravity.z;
+
+    updateShake(z1,z2);
+}
+
+function updateShake(z1,z2) {
+	gm.count += Math.ceil(Math.abs(z2-z1));
+	document.getElementById("counter").innerHTML = gm.count;
+}
+
+</script>
+<style type="text/css">
+#browsersux {
+	padding: 50px;
+	font-size: 150px;
+	font-weight: bold;
+	font-family: "Helvetica", "Arial", "sans-serif";
+	text-align: center;
+}
+#main {
+	display: none;
+	text-align: center;
+}
+#counter {
+	font-size: 40px;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: 50px;
+	font-family: "Helvetica", "Arial", "sans-serif";
+}
+</style>
+</head>
+<body>
+	<div id="browsersux">Your computer and/or browser sux.</div>
+	<div id="main">
+		<h1>Milkshaker</h1>
+		<p id="counter">0</p>
+	</div>
+</body>
+</html>
