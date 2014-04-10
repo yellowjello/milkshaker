@@ -7,6 +7,8 @@ function GameManager() {
 	this.callbacks = [];
 	this.turbulence = 0;
 	this.MAX_TURBULENCE = 100;
+	this.MV_TIER = {1: 0.1, 2:0.2, 3:0.5, 4:1, 5:2};
+	this.MV_COST = {0: 100, 1: 200, 2:500, 3:800, 4:1500};
 }
 
 GameManager.prototype.shakeMilk = function(milk) {
@@ -28,6 +30,38 @@ GameManager.prototype.decreaseTurbulence = function(turbulence) {
 		this.turbulence = 0;
 	}
 	this.notifyUpdate();
+};
+
+GameManager.prototype.getTurbulenceTier = function() {
+	if (this.turbulence < 10) {
+		return 1;
+	}
+	else if (gm.turbulence < 25) {
+		return 2;
+	}
+	else if (gm.turbulence < 50) {
+		return 3;
+	}
+	else if (gm.turbulence < 90) {
+		return 4;
+	}
+	else {
+		return 5;
+	}
+};
+
+GameManager.prototype.buyMV = function() {
+	if (this.canBuyMV()) {
+		// Subtract milk
+		this.milk -= this.MV_COST[this.mv];
+		// Add item
+		this.mv += 1;
+		this.notifyUpdate();
+	}
+};
+
+GameManager.prototype.canBuyMV = function() {
+	return this.MV_COST[this.mv] && this.milk >= this.MV_COST[this.mv];
 };
 
 /*
