@@ -38,7 +38,7 @@ AccelerationMonitor.prototype.callbackHandler = function(e) {
 
 AccelerationMonitor.prototype.initialize = function(e) {
 	window.removeEventListener("devicemotion", this.currentCallback, true);
-	if (e.accelerationIncludingGravity) {
+	if (e.accelerationIncludingGravity && e.accelerationIncludingGravity.z != null) {
 		this.onInit();
 	}
 }
