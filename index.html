@@ -1,15 +1,25 @@
 <!doctype html>
 <html>
 <head>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700' rel='stylesheet' type='text/css'>
+<link href='normalize.css' type='text/css'>
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/acceleration_monitor.js"></script>
 <script type="text/javascript" src="js/game_manager.js"></script>
 <script type="text/javascript">
+var testing = true;
+
 var sm;
 var gm;
 
 window.onload = function () {
 	gm = new GameManager();
 	sm = new ShakeMonitor(onInit);
+
+	if (testing) {
+		document.getElementById("browsersux").style.display = "none";
+		document.getElementById("main").style.display = "block";
+	}
 }
 
 function onInit() {
@@ -17,7 +27,6 @@ function onInit() {
 	document.getElementById("main").style.display = "block";
 
 	sm.start(onShake);
-	console.log("inited");
 }
 
 function onShake(e1,e2) {
@@ -33,31 +42,95 @@ function onShake(e1,e2) {
 }
 
 function updateShake(z1,z2) {
-	gm.count += Math.ceil(Math.abs(z2-z1));
-	document.getElementById("counter").innerHTML = gm.count;
+	var diff = Math.abs(z2-z1)
+	gm.addMilk(diff);
+	document.getElementById("counter").innerHTML = Math.round(gm.milk)+" mL";
+	document.getElementById("milk_overlay").innerHTML = "+ "+diff.toFixed(1)+" mL";
+
+	anim_milk_overlay();
+}
+
+function anim_milk_overlay() {
+	$mo = $("#milk_overlay");
+	$mo.css("left", 125 - $mo.width() / 2);
+
+	$mo.removeClass("flash-move");
+	$mo[0].offsetWidth = $mo[0].offsetWidth; // magic
+	$mo.addClass("flash-move");
 }
 
 </script>
 <style type="text/css">
+body {
+	font-family: 'Open Sans', sans-serif;
+}
 #browsersux {
 	padding: 50px;
 	font-size: 150px;
 	font-weight: bold;
-	font-family: "Helvetica", "Arial", "sans-serif";
 	text-align: center;
 }
 #main {
 	display: none;
 	text-align: center;
 }
+#main h1 {
+	font-weight: bold;
+	font-size: 90px;
+	margin: 0.3em 0 0 0;
+}
 #counter {
-	font-size: 40px;
+	font-size: 60px;
+	font-weight: 600;
+	margin: 0.2em 0 0.2em 0;
+}
+#milk {
+	position: relative;
+    background-image: url("milkbottle.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 250px;
+    height: 300px;
+    margin: 0 auto 0 auto;
+}
+#milk_overlay {
+	position: absolute;
+	bottom: 0;
+	color: #12336B;
+	font-size: 90px;
+	font-weight: bold;
+	white-space: nowrap;
+	text-align: center;
+	opacity: 0;
 }
 
-h1 {
-	font-weight: bold;
-	font-size: 50px;
-	font-family: "Helvetica", "Arial", "sans-serif";
+.flash-move {
+	-webkit-animation: flash-anim 0.5s, updown-anim 0.5s;
+	animation: flash-anim 0.5s, updown-anim 0.5s;
+}
+
+@-webkit-keyframes flash-anim
+{
+	0%   {opacity: 0;}
+	50%  {opacity: 1;}
+	100% {opacity: 0;}
+}
+@keyframes flash-anim
+{
+	0%   {opacity: 0;}
+	50%  {opacity: 1;}
+	100% {opacity: 0;}
+}
+@-webkit-keyframes updown-anim
+{
+	0%   {bottom: 0px;}
+	100% {bottom: 200px;}
+}
+@keyframes updown-anim
+{
+	0%   {bottom: 0px;}
+	100% {bottom: 200px;}
 }
 </style>
 </head>
@@ -65,7 +138,11 @@ h1 {
 	<div id="browsersux">Your computer and/or browser sux.</div>
 	<div id="main">
 		<h1>Milkshaker</h1>
-		<p id="counter">0</p>
+		<p id="counter">0 mL</p>
+		<div id="milk_wrapper">
+			<div id="milk"><div id="milk_overlay">+ 0 mL</span></div>
+		</div>
+		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
 	</div>
 </body>
 </html>
