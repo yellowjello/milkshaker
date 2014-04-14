@@ -4,7 +4,7 @@
     "use strict";
 
     /* ----- Executed at startup ----- */
-    var sm, gm, testing = true;
+    var sm, gm, testing = false;
 
     window.onload = function () {
         gm = new GameManager();
