@@ -1,0 +1,120 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+#browsersux {
+    padding: 50px;
+    font-size: 130px;
+    font-weight: bold;
+    text-align: center;
+}
+#main {
+    display: none;
+    text-align: center;
+}
+#main > h1 {
+    font-weight: bold;
+    font-size: 90px;
+    margin: 0.3em 0 0 0;
+}
+#counter {
+    font-size: 60px;
+    font-weight: 600;
+    margin: 0.2em 0 0.2em 0;
+}
+#milk {
+    position: relative;
+    background-image: url("img/milkbottle.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 250px;
+    height: 300px;
+    margin: 0 auto 0 auto;
+}
+#milk_overlay {
+    position: absolute;
+    bottom: 0;
+    color: #12336B;
+    font-size: 90px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+    opacity: 0;
+}
+#b_shake {
+    display: none;
+}
+#turbulence_desc {
+    font-size: 70px;
+    font-weight: 700;
+    margin: 0.2em 0 0.2em 0;
+}
+#overlay {
+    display: none;
+    position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+#store {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    margin: 0 auto 0 auto;
+    width: 600px;
+    height: 400px;
+    z-index: 15;
+    background-color: white;
+    text-align: left;
+    padding: 20px;
+}
+#store_header {
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+#store_milk {
+    float: right;
+}
+#store_main {
+    position: relative;
+}
+.store_item h1 {
+    font-size: 15px;
+    font-weight: bold;
+}
+.store_button_wrapper {
+    float: right;
+}
+#exit_store_wrapper {
+    position: absolute;
+    top: 330px;
+    left: 250px;
+}
+
+.flash-move {
+    animation: flash-anim 0.5s, updown-anim 0.5s;
+}
+.wobble1 {
+    animation: wobble-lite-anim 2s linear infinite;
+}
+.wobble2 {
+    animation: wobble-lite-anim 1s linear infinite;
+}
+.wobble3 {
+    animation: wobble-heavy-anim 1s linear infinite;
+}
+.wobble4 {
+    animation: wobble-heavy-anim 0.3s linear infinite;
+}
+.wobble5 {
+    animation: wobble-heavyplus-anim 0.1s linear infinite;
+}
+.rainbow {
+    animation: rainbow-anim 0.5s linear infinite;
+}
